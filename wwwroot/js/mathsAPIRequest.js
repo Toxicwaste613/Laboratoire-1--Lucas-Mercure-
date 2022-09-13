@@ -16,7 +16,7 @@ function webAPI_getMaths(host, queryString, successCallBack = null, errorCallBac
             error: function (jqXHR, textStatus, errorThrown) {
                 if (errorCallBack != null)
                     errorCallBack(errorThrown);
-                console.log("webAPI_getContacts - error");
+                console.log("webAPI_getMaths- error");
                 resolve(false);
             }
         });
