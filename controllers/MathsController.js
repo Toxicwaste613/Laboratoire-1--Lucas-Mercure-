@@ -19,6 +19,7 @@ module.exports =
                     let x;
                     let y;
                     let value;
+                    if (' ') op='+';
                     switch (op) {
                         //Opérateur +
                         case '+':
