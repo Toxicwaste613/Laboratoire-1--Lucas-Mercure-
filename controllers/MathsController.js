@@ -5,6 +5,11 @@ module.exports =
         constructor(HttpContext) {
             super(HttpContext);
         }
+        checkParamsCount(nbParams){
+            if(Object.keys(this.params).length > nbParams){
+                return this.error("too many parameters");
+            }
+        }
         get() {
             if (this.HttpContext.path.queryString == "?") {
                 // Send helppage
@@ -12,7 +17,6 @@ module.exports =
                 let content = fs.readFileSync(helpPagePath);
                 this.HttpContext.response.content("text/html", content);
             }
-            
             else {
                 if (this.HttpContext.path.params.op) {
                     let op = this.HttpContext.path.params.op;
@@ -24,6 +28,10 @@ module.exports =
                         //Opérateur +
                         case '+':
                             {
+                                if(this.checkParamsCount(3))
+                                {
+                                    this.HttpContext.path.params = "too many parameters";
+                                }
                                 this.HttpContext.path.params.op = "+";
                                 x = this.HttpContext.path.params.x;
                                 y = this.HttpContext.path.params.y;
@@ -35,6 +43,10 @@ module.exports =
                         //Opérateur -
                         case '-':
                             {
+                                if(this.checkParamsCount(3))
+                                {
+                                    this.HttpContext.path.params = "too many parameters";
+                                }
                                 this.HttpContext.path.params.op = "-";
                                 x = this.HttpContext.path.params.x;
                                 y = this.HttpContext.path.params.y;
@@ -45,6 +57,10 @@ module.exports =
                         //
                         case '*':
                             {
+                                if(this.checkParamsCount(3))
+                                {
+                                    this.HttpContext.path.params = "too many parameters";
+                                }
                                 if (parseInt(this.HttpContext.path.params.x) === 0 || parseInt(this.HttpContext.path.params.y) === 0) {
                                     this.HttpContext.path.params.value = "NaN";
                                 }
@@ -59,6 +75,10 @@ module.exports =
                             }
                         case '/':
                             {
+                                if(this.checkParamsCount(3))
+                                {
+                                    this.HttpContext.path.params = "too many parameters";
+                                }
                                 if (parseInt(this.HttpContext.path.params.x) === 0 || parseInt(this.HttpContext.path.params.y) === 0) {
                                     this.HttpContext.path.params.value = "NaN";
                                 }
@@ -73,6 +93,10 @@ module.exports =
                             }
                         case '%':
                             {
+                                if(this.checkParamsCount(3))
+                                {
+                                    this.HttpContext.path.params = "too many parameters";
+                                }
                                 if (parseInt(this.HttpContext.path.params.x) === 0 || parseInt(this.HttpContext.path.params.y) === 0) {
                                     this.HttpContext.path.params.value = "NaN";
                                 }
@@ -87,6 +111,10 @@ module.exports =
                             }
                         case '!':
                             {
+                                if(this.checkParamsCount(2))
+                                {
+                                    this.HttpContext.path.params = "too many parameters";
+                                }
                                 if (parseInt(this.HttpContext.path.params.n) === 0) {
                                     this.HttpContext.path.params.value = "NaN";
                                 }
@@ -100,6 +128,10 @@ module.exports =
                             }
                         case 'p':
                             {
+                                if(this.checkParamsCount(2))
+                                {
+                                    this.HttpContext.path.params = "too many parameters";
+                                }
                                 if (parseInt(this.HttpContext.path.params.n) === 0) {
                                     this.HttpContext.path.params.value = "NaN";
                                 }
@@ -113,6 +145,10 @@ module.exports =
                             }
                         case 'np':
                             {
+                                if(this.checkParamsCount(2))
+                                {
+                                    this.HttpContext.path.params = "too many parameters";
+                                }
                                 if (parseInt(this.HttpContext.path.params.n) === 0) {
                                     this.HttpContext.path.params.value = "NaN";
                                 }
