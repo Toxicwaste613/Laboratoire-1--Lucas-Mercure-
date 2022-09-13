@@ -54,7 +54,7 @@ module.exports =
                                 this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 break;
                             }
-                        //
+                        //Opérateur *
                         case '*':
                             {
                                 if(this.checkParamsCount(3))
