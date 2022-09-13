@@ -37,9 +37,8 @@ module.exports =
                                     x = this.HttpContext.path.params.x;
                                     y = this.HttpContext.path.params.y;
                                     this.HttpContext.path.params.value = parseInt(x) + parseInt(y);
-
+                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 }
-                                this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 break;
                             }
                         //Opérateur -
@@ -54,8 +53,8 @@ module.exports =
                                     x = this.HttpContext.path.params.x;
                                     y = this.HttpContext.path.params.y;
                                     this.HttpContext.path.params.value = parseInt(x) - parseInt(y);
+                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 }
-                                this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 break;
                             }
                         //Opérateur *
@@ -85,14 +84,15 @@ module.exports =
                                 }
                                 if (parseInt(this.HttpContext.path.params.x) === 0 || parseInt(this.HttpContext.path.params.y) === 0) {
                                     this.HttpContext.path.params.value = "NaN";
+                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 }
                                 else {
                                     this.HttpContext.path.params.op = "/";
                                     x = this.HttpContext.path.params.x;
                                     y = this.HttpContext.path.params.y;
                                     this.HttpContext.path.params.value = parseInt(x) / parseInt(y);
+                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 }
-                                this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 break;
                             }
                         case '%':
@@ -103,14 +103,15 @@ module.exports =
                                 }
                                 if (parseInt(this.HttpContext.path.params.x) === 0 || parseInt(this.HttpContext.path.params.y) === 0) {
                                     this.HttpContext.path.params.value = "NaN";
+                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 }
                                 else {
                                     this.HttpContext.path.params.op = "%";
                                     x = this.HttpContext.path.params.x;
                                     y = this.HttpContext.path.params.y;
                                     this.HttpContext.path.params.value = parseInt(x) % parseInt(y);
+                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 }
-                                this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 break;
                             }
                         case '!':
@@ -121,13 +122,14 @@ module.exports =
                                 }
                                 if (parseInt(this.HttpContext.path.params.n) === 0) {
                                     this.HttpContext.path.params.value = "NaN";
+                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 }
                                 else {
                                     let n = parseInt(this.HttpContext.path.params.n);
 
                                     this.HttpContext.path.params.value = factorial(n);
+                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 }
-                                this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 break;
                             }
                         case 'p':
@@ -138,13 +140,14 @@ module.exports =
                                 }
                                 if (parseInt(this.HttpContext.path.params.n) === 0) {
                                     this.HttpContext.path.params.value = "NaN";
+                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 }
                                 else {
                                     this.HttpContext.path.params.op = "p";
                                     let n = parseInt(this.HttpContext.path.params.n);
                                     this.HttpContext.path.params.value = isPrime(n);
+                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 }
-                                this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 break;
                             }
                         case 'np':
@@ -155,13 +158,14 @@ module.exports =
                                 }
                                 if (parseInt(this.HttpContext.path.params.n) === 0) {
                                     this.HttpContext.path.params.value = "NaN";
+                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 }
                                 else {
                                     this.HttpContext.path.params.op = "np";
                                     let n = parseInt(this.HttpContext.path.params.n);
                                     this.HttpContext.path.params.value = findPrime(n);
+                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 }
-                                this.HttpContext.response.JSON(this.HttpContext.path.params);
                                 break;
                             }
                     }
