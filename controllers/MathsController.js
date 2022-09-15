@@ -4,10 +4,32 @@ module.exports =
     class MathsController extends require('./Controller') {
         constructor(HttpContext) {
             super(HttpContext);
+            this.params = HttpContext.path.params;
         }
         checkParamsCount(nbParams) {
             if (Object.keys(this.params).length > nbParams) {
                 return this.error("too many parameters");
+            }
+            return true;
+        }
+        error(message) {
+            this.params.error = message;
+            this.response.JSON(this.params);
+            return false;
+        }
+        getNumericParam(name) {
+            if (name in this.params) {
+                value = parseFloat(this.params[name]);
+                if (!isNaN(value)) {
+                    this.params[name] = value;
+                    return true;
+                }
+                else {
+                    return this.error(name + " is not a number");
+                }
+            }
+            else {
+                return this.error(name + " is missing");
             }
         }
         get() {
@@ -27,147 +49,82 @@ module.exports =
                     switch (op) {
                         //Opérateur +
                         case '+':
-                            {
-                                if (this.checkParamsCount(3)) {
-                                    this.HttpContext.path.params.error = "too many parameters";
-                                    this.HttpContext.path.params.JSON();
-                                }
-                                else {
-                                    this.HttpContext.path.params.op = "+";
-                                    x = this.HttpContext.path.params.x;
-                                    y = this.HttpContext.path.params.y;
-                                    this.HttpContext.path.params.value = parseInt(x) + parseInt(y);
-                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
-                                }
-                                break;
+                            if (this.checkParamsCount(3) && this.getNumericParam(y) && this.getNumericParam(x)) {
+
+                                x = this.HttpContext.path.params.x;
+                                y = this.HttpContext.path.params.y;
+                                this.HttpContext.path.params.value = x + y;
+                                this.HttpContext.response.JSON(this.HttpContext.path.params);
                             }
+                            break;
                         //Opérateur -
                         case '-':
-                            {
-                                if (this.checkParamsCount(3)) {
-                                    this.HttpContext.path.params.error = "too many parameters";
-                                    this.HttpContext.path.params.JSON();
-                                }
-                                else {
-                                    this.HttpContext.path.params.op = "-";
-                                    x = this.HttpContext.path.params.x;
-                                    y = this.HttpContext.path.params.y;
-                                    this.HttpContext.path.params.value = parseInt(x) - parseInt(y);
-                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
-                                }
-                                break;
+                            if (this.checkParamsCount(3) && this.getNumericParam(y) && this.getNumericParam(x)) {
+
+                                x = this.HttpContext.path.params.x;
+                                y = this.HttpContext.path.params.y;
+                                this.HttpContext.path.params.value = x - y;
+                                this.HttpContext.response.JSON(this.HttpContext.path.params);
                             }
+                            break;
                         //Opérateur *
                         case '*':
-                            {
-                                if (this.checkParamsCount(3)) {
-                                    this.HttpContext.path.params.error = "too many parameters";
-                                    this.HttpContext.path.params.JSON();
-                                }
-                                if (parseInt(this.HttpContext.path.params.x) === 0 || parseInt(this.HttpContext.path.params.y) === 0) {
-                                    this.HttpContext.path.params.value = "NaN";
-                                }
-                                else {
-                                    this.HttpContext.path.params.op = "*";
-                                    x = this.HttpContext.path.params.x;
-                                    y = this.HttpContext.path.params.y;
-                                    this.HttpContext.path.params.value = parseInt(x) * parseInt(y);
-                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
-                                }
-                                break;
-                            }
-                        case '/':
-                            {
-                                if (this.checkParamsCount(3)) {
-                                    this.HttpContext.path.params.error = "too many parameters";
-                                    this.HttpContext.path.params.JSON();
-                                }
-                                if (parseInt(this.HttpContext.path.params.x) === 0 || parseInt(this.HttpContext.path.params.y) === 0) {
-                                    this.HttpContext.path.params.value = "NaN";
-                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
-                                }
-                                else {
-                                    this.HttpContext.path.params.op = "/";
-                                    x = this.HttpContext.path.params.x;
-                                    y = this.HttpContext.path.params.y;
-                                    this.HttpContext.path.params.value = parseInt(x) / parseInt(y);
-                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
-                                }
-                                break;
-                            }
-                        case '%':
-                            {
-                                if (this.checkParamsCount(3)) {
-                                    this.HttpContext.path.params.error = "too many parameters";
-                                    this.HttpContext.path.params.JSON();
-                                }
-                                if (parseInt(this.HttpContext.path.params.x) === 0 || parseInt(this.HttpContext.path.params.y) === 0) {
-                                    this.HttpContext.path.params.value = "NaN";
-                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
-                                }
-                                else {
-                                    this.HttpContext.path.params.op = "%";
-                                    x = this.HttpContext.path.params.x;
-                                    y = this.HttpContext.path.params.y;
-                                    this.HttpContext.path.params.value = parseInt(x) % parseInt(y);
-                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
-                                }
-                                break;
-                            }
-                        case '!':
-                            {
-                                if (this.checkParamsCount(2)) {
-                                    this.HttpContext.path.params.error = "too many parameters";
-                                    this.HttpContext.path.params.JSON();
-                                }
-                                if (parseInt(this.HttpContext.path.params.n) === 0) {
-                                    this.HttpContext.path.params.value = "NaN";
-                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
-                                }
-                                else {
-                                    let n = parseInt(this.HttpContext.path.params.n);
+                            if (this.checkParamsCount(3) && this.getNumericParam(y) && this.getNumericParam(x)) {
 
-                                    this.HttpContext.path.params.value = factorial(n);
-                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
-                                }
-                                break;
+                                x = this.HttpContext.path.params.x;
+                                y = this.HttpContext.path.params.y;
+                                this.HttpContext.path.params.value = x * y;
+                                this.HttpContext.response.JSON(this.HttpContext.path.params);
                             }
+                            break;
+                        case '/':
+                            if (this.checkParamsCount(3) && this.getNumericParam(y) && this.getNumericParam(x)) {
+
+                                x = this.HttpContext.path.params.x;
+                                y = this.HttpContext.path.params.y;
+                                this.HttpContext.path.params.value = x / y;
+                                this.HttpContext.response.JSON(this.HttpContext.path.params);
+                            }
+                            break;
+                        case '%':
+                            if (this.checkParamsCount(3) && this.getNumericParam(y) && this.getNumericParam(x)) {
+
+                                x = this.HttpContext.path.params.x;
+                                y = this.HttpContext.path.params.y;
+                                this.HttpContext.path.params.value = x % y;
+                                this.HttpContext.response.JSON(this.HttpContext.path.params);
+                            }
+                            break;
+                        case '!':
+
+                            if (this.checkParamsCount(2) && this.getNumericParam(y) && this.getNumericParam(x)) {
+
+
+                                let n = parseInt(this.HttpContext.path.params.n);
+
+                                this.HttpContext.path.params.value = factorial(n);
+                                this.HttpContext.response.JSON(this.HttpContext.path.params);
+                            }
+                            break;
                         case 'p':
-                            {
-                                if (this.checkParamsCount(2)) {
-                                    this.HttpContext.path.params.error = "too many parameters";
-                                    this.HttpContext.path.params.JSON();
-                                }
-                                if (parseInt(this.HttpContext.path.params.n) === 0) {
-                                    this.HttpContext.path.params.value = "NaN";
-                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
-                                }
-                                else {
-                                    this.HttpContext.path.params.op = "p";
-                                    let n = parseInt(this.HttpContext.path.params.n);
-                                    this.HttpContext.path.params.value = isPrime(n);
-                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
-                                }
-                                break;
+                            if (this.checkParamsCount(2) && this.getNumericParam(y) && this.getNumericParam(x)) {
+                                this.HttpContext.path.params.op = "p";
+                                let n = parseInt(this.HttpContext.path.params.n);
+                                this.HttpContext.path.params.value = isPrime(n);
+                                this.HttpContext.response.JSON(this.HttpContext.path.params);
                             }
+                            break;
+
                         case 'np':
-                            {
-                                if (this.checkParamsCount(2)) {
-                                    this.HttpContext.path.params.error = "too many parameters";
-                                    this.HttpContext.path.params.JSON();
-                                }
-                                if (parseInt(this.HttpContext.path.params.n) === 0) {
-                                    this.HttpContext.path.params.value = "NaN";
-                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
-                                }
-                                else {
-                                    this.HttpContext.path.params.op = "np";
-                                    let n = parseInt(this.HttpContext.path.params.n);
-                                    this.HttpContext.path.params.value = findPrime(n);
-                                    this.HttpContext.response.JSON(this.HttpContext.path.params);
-                                }
-                                break;
+                            if (this.checkParamsCount(2) && this.getNumericParam(y) && this.getNumericParam(x)) {
+
+                                this.HttpContext.path.params.op = "np";
+                                let n = parseInt(this.HttpContext.path.params.n);
+                                this.HttpContext.path.params.value = findPrime(n);
+                                this.HttpContext.response.JSON(this.HttpContext.path.params);
                             }
+                            break;
+
                     }
                 }
                 else {
